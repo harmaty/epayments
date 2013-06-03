@@ -30,13 +30,18 @@ class Epayments < Parser
       f.TargetWalletNumberPart2 = wallet_num_part2
       f.Details = "#{options[:id]} #{options[:domain]}"
     end.submit
-    sleep(20)
+    wait(20)
 
     code = get_transfer_validation_code(options[:created_at])
     @page = @page.form_with :id => "Form" do |f|
       f.PayCode = code
     end.submit
-    @page.search(".cab_content p")[0].text.strip == "Your Internal Payment has been processed"
+
+    if @page.search(".cab_content p")[0].text.strip == "Your Internal Payment has been processed"
+      true
+    else
+      raise EpaymentsException, @page.search(".cab_content p")[0].text
+    end
   end
 
   private
@@ -57,10 +62,16 @@ class Epayments < Parser
     sms_list = @sms_gateway.get_sms_list
     code = nil
     sms_list.reverse.each do |sms|
-      code = sms["message"].split("n").last.strip if sms["phone"] == "EPA" && (sms["sent"] + " +0400").to_datetime > request_created_at
+      if (sms["phone"] == "EPA") && ((sms["sent"] + " +0400").to_datetime > request_created_at)
+        code = sms["message"].split("n").last.strip 
+      end
     end
-    raise EpaymentsException, "Unknown response code" if code.nil?
+    raise EpaymentsException, "Unknown sms code" if code.nil?
     code
+  end
+
+  def wait(seconds)
+    sleep(seconds)  
   end
 
 end
