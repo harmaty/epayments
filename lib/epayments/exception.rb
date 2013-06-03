@@ -1,0 +1,1 @@
+class EpaymentsException < Exception; end
