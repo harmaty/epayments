@@ -30,6 +30,8 @@ class Epayments < Parser
       f.Details = "#{options[:id]} #{options[:domain]}"
     end.submit
 
+    @page = @page.form_with(:id => "Form").submit
+
     if @page.search(".cab_content p")[0].text.strip == "Your Internal Payment has been processed"
       true
     else
@@ -43,7 +45,7 @@ class Epayments < Parser
     @page = @agent.get("https://#{SERVICE_URL}/#{LOCATIONS[location]}")
   end
 
-  def save_current_page(name)
+  def save_current_page(name="Page#{Time.now.to_i}.html")
     @page.save("#{name}.html")
   end
 
