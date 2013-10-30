@@ -2,9 +2,9 @@ require 'mechanize'
 
 class Parser
 
-  def self.transfer_funds(login, password, sms_gateway, options)
+  def self.transfer_funds(login, password, options)
     api = self.new(login, password)
-    api.transfer_funds(options, sms_gateway)
+    api.transfer_funds(options)
   end
 
   public
