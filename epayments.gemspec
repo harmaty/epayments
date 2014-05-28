@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'epayments'
-  s.version     = '0.0.1'
-  s.date        = '2013-06-03'
+  s.version     = '0.0.2'
+  s.date        = '2014-05-27'
   s.summary     = "Ruby wrapper for Epayments"
   s.description = "Allows to transfer funds between epayments users"
   s.authors     = ["Stanislav Mekhonoshin"]

@@ -14,6 +14,7 @@ class Parser
       @agent = Mechanize.new do |a|
         a.user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1"
       end
+      @agent.verify_mode = OpenSSL::SSL::VERIFY_NONE
       @page = @agent.get("https://#{self.class::SERVICE_URL}/")
       sign_in
     end
