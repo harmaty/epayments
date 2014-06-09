@@ -39,6 +39,10 @@ class Epayments < Parser
     end
   end
 
+  def balance
+    @page.search(".card_money span strong").first.text.to_f
+  end
+
   private
 
   def navigate(location)
